@@ -5,16 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tung Đồng Xu</title>
   <script src="https://unpkg.com/@farcaster/miniapps-sdk@latest/dist/sdk.umd.js"></script>
-  <script defer src="script.js"></script>
   <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 100px; }
-    button { font-size: 20px; padding: 10px 20px; border-radius: 12px; cursor: pointer; }
-    .result { margin-top: 30px; font-size: 28px; font-weight: bold; }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background: radial-gradient(circle at center, #f8f8f8, #ddd);
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    .coin {
+      margin: 40px auto;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: gold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      font-weight: bold;
+      color: #333;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 1s;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      background: #facc15;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 25px;
+      font-size: 28px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <h1>🪙 Tung Đồng Xu 🪙</h1>
+  <div class="coin" id="coin">🪙</div>
   <button id="tossBtn">Tung!</button>
   <div class="result" id="result"></div>
+
+  <script>
+    const { sdk } = window.FarcasterMiniApp || { sdk: { actions: { ready: () => {} } } };
+
+    const coin = document.getElementById('coin');
+    const resultEl = document.getElementById('result');
+    const btn = document.getElementById('tossBtn');
+
+    btn.addEventListener('click', () => {
+      resultEl.textContent = "";
+      coin.style.transform = "rotateY(0deg)";
+
+      // Quay 10 vòng
+      coin.style.transition = "transform 1s ease-in-out";
+      coin.style.transform = "rotateY(3600deg)";
+
+      setTimeout(() => {
+        const outcomes = ["Sấp 🪙", "Ngửa 🪙"];
+        const result = outcomes[Math.floor(Math.random() * outcomes.length)];
+        resultEl.textContent = result;
+        sdk.actions.ready();
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
